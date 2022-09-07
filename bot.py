@@ -63,7 +63,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("porcodio", porcodio))
     dp.add_handler(CommandHandler("simia", simia))
-    dp.add_handler(MessageHandler("Ciao", message_handler))
+    dp.add_handler(MessageHandler(Filters.text, message_handler))
 
     # on noncommand i.e message - echo the message on Telegram
     #dp.add_handler(MessageHandler(Filters.text, echo))

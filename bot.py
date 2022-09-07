@@ -42,7 +42,9 @@ def echo(update, context):
 
 def message_handler(update, context):
     """Echo the user message."""
-    update.message.reply_text(update.message.text)
+    text = update.message.text
+    if text == "Simia":
+        update.message.reply_text('Mauro è il re delle simie!')
 
 def error(update, context):
     """Log Errors caused by Updates."""

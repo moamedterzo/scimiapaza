@@ -29,14 +29,18 @@ def help(update, context):
 def porcodio(update, context):
 
     update.message.reply_text('Porco dio!')
-    
-    
+
+
 def simia(update, context):
 
     update.message.reply_text('Mauro è il re delle simie!')
 
 
 def echo(update, context):
+    """Echo the user message."""
+    update.message.reply_text(update.message.text)
+
+def message_handler(update, context):
     """Echo the user message."""
     update.message.reply_text(update.message.text)
 
@@ -58,7 +62,8 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("porcodio", porcodio))
-    dp.add_handler(CommandHandler("simia", porcodio))
+    dp.add_handler(CommandHandler("simia", simia))
+    dp.add_handler(MessageHandler("Ciao", message_handler))
 
     # on noncommand i.e message - echo the message on Telegram
     #dp.add_handler(MessageHandler(Filters.text, echo))

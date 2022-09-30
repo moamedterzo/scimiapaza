@@ -44,7 +44,7 @@ def message_handler(update, context):
         update.message.reply_text('Mauro è il re delle simie!')
     elif text in ["simia", "scimmia", "simmia"]:
         if boss is None:
-            boss = update.message.from_user
+            boss = update.message.from_user.first_name
             update.message.reply_text('Per oggi sei TU il Queer delle Simie!')
         else:
             update.message.reply_text(boss + ' è il Queer delle Simie!')

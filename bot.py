@@ -4,6 +4,7 @@ Deployed using heroku.
 Author: liuhh02 https://medium.com/@liuhh02
 """
 
+import schedule, time
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
@@ -20,35 +21,35 @@ TOKEN = '5524943032:AAEZdiiNJ0JgQvCIf4py3Z9omNpwKRQiYJY'
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
+    update.message.reply_text('Cazzo vuoi oh')
 
-def help(update, context):
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
+boss = None
 
-def porcodio(update, context):
-
-    update.message.reply_text('Porco dio!')
-
-
-def simia(update, context):
-
-    update.message.reply_text('Mauro è il re delle simie!')
-
-
-def echo(update, context):
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
-
-def message_handler(update, context):
-    """Echo the user message."""
-    text = update.message.text
-    if text == "Simia":
-        update.message.reply_text('Mauro è il re delle simie!')
+def reset(update, context):
+    global boss
+    boss = None
 
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+
+def message_handler(update, context):
+    """Echo the user message."""
+    text = update.message.text.lower() or ''
+
+    global boss
+
+    if text == "simione":
+        update.message.reply_text('Mauro è il re delle simie!')
+    elif text in ["simia", "scimmia", "simmia"]:
+        if boss is None:
+            boss = update.message.from_user
+            update.message.reply_text('Per oggi sei TU il Queer delle Simie!')
+        else:
+            update.message.reply_text(boss + ' è il Queer delle Simie!')
+
+
 
 def main():
     """Start the bot."""
@@ -62,9 +63,9 @@ def main():
 
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(CommandHandler("porcodio", porcodio))
-    dp.add_handler(CommandHandler("simia", simia))
+    dp.add_handler(CommandHandler("reset", reset))
+    #dp.add_handler(CommandHandler("porcodio", porcodio))
+    #dp.add_handler(CommandHandler("simia", simia))
     dp.add_handler(MessageHandler(Filters.text, message_handler))
 
     # on noncommand i.e message - echo the message on Telegram
@@ -85,4 +86,16 @@ def main():
     updater.idle()
 
 if __name__ == '__main__':
+
+    # Every day at 12am or 00:00 time bedtime() is called.
+    schedule.every().day.at("00:00").do(reset)
+
     main()
+
+    # Loop so that the scheduling task
+    # keeps on running all time.
+    #while True:
+        # Checks whether a scheduled task
+        # is pending to run or not
+    #    schedule.run_pending()
+    #    time.sleep(1)
